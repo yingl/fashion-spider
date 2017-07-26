@@ -20,10 +20,10 @@ def get_title(driver):
         if element:
             title += ' - ' + element.text.strip()
     return title
-    
+
 def get_code(driver):
     return ''
-    
+
 def get_price(driver):
     price = 0
     # Locate discounted price first
@@ -47,7 +47,7 @@ def get_intro(driver):
     if texts:
         intro = '\n'.join(texts)
     return intro
-    
+
 def get_images(driver):
     images = ''
     texts = set([])
@@ -68,8 +68,10 @@ def parse(driver, url):
     good['images'] = get_images(driver)
     return good
 
-if __name__ == '__main__':
-    url = sys.argv[1]
+def main():
     driver = util.create_chrome_driver()
-    print(parse(driver, url))
+    print(parse(driver, sys.argv[1]))
     driver.quit()
+
+if __name__ == '__main__':
+    main()

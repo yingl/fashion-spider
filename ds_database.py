@@ -64,21 +64,24 @@ def init_database(config):
                 obj._meta.database = db
     return db
 
-if __name__ == '__main__':
-    DATABASE = None
+def main():
+    database = None
     try:
         import ds_config as dc # You can modify the code to load different config dynamically
-        DATABASE = init_database(dc.DB)
-        TABLES = []
+        database = init_database(dc.DB)
+        tables = []
         for var in dir(sys.modules[__name__]):
             if var != 'Model':
                 obj = eval(var)
                 if inspect.isclass(obj) and issubclass(obj, Model):
-                    TABLES.append(obj)
-        DATABASE.connect()
-        DATABASE.create_tables(TABLES, safe=True)
+                    tables.append(obj)
+        database.connect()
+        database.create_tables(tables, safe=True)
     except Exception as e:
         print('%s\n%s' % (e, traceback.print_exc()))
     finally:
-        if DATABASE:
-            DATABASE.close()
+        if database:
+            database.close()
+
+if __name__ == '__main__':
+    main()

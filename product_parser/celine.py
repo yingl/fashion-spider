@@ -44,7 +44,7 @@ def get_intro(driver):
             texts.append(text_.strip())
         intro = '\n'.join(texts)
     return intro
-    
+
 def get_images(driver):
     images = ''
     element = util.find_element_by_css_selector(driver, 'span.cycle-slide-active > img')
@@ -63,7 +63,10 @@ def parse(driver, url):
     good['images'] = get_images(driver)
     return good
 
+def main():
+    driver = util.create_chrome_driver()
+    print(parse(driver, sys.argv[1]))
+    driver.quit()
+
 if __name__ == '__main__':
-    DRIVER = util.create_chrome_driver()
-    print(parse(DRIVER, sys.argv[1]))
-    DRIVER.quit()
+    main()

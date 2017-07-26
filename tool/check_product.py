@@ -11,41 +11,47 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('-b',
                         '--brand',
-                        help='Specify the brand you want to check')
+                        help='Specify the brand you want to check',
+                        default='')
     return parser.parse_args()
 
 def write_to_file(file, lines):
-    """ Write result lines to file """
     with open(file, 'w+') as f:
         for line in lines:
             if line:
                 f.write(line + '\n')
 
-if __name__ == '__main__':
-    ARGS = parse_args()
-    BRAND = ARGS.brand
-    EMPTY_CODE = []
-    EMPTY_PRICE = []
-    EMPTY_INTRO = []
-    EMPTY_IMAGES = []
+def main():
+    args = parse_args()
+    brand = args.brand
+    print(brand)
+    codes = []
+    prices = []
+    intros = []
+    images = []
     dd.init_database(pc.DB)
-    jq = dd.Source.select(dd.Source.id, dd.Source.url)
-    if BRAND:
-        JOB_QUEUE = jq.where(dd.Source.url.contains('%%' + BRAND))
-    JQ = JOB_QUEUE.alias('jq')
-    QUERY = dd.Result.select(dd.Result, JQ.c.url).join(JQ, on=(JQ.c.id == dd.Result.source_id))
-    for r in QUERY:
+    source_query = dd.Source.select(dd.Source.id, dd.Source.url)
+    if brand:
+        source_query = source_query.where(dd.Source.url.contains('%%' + brand))
+    source_query = source_query.alias('source_query')
+    query = dd.Result.select(dd.Result, source_query.c.url).join(source_query, on=(source_query.c.id == dd.Result.source_id))
+    print(query)
+    for r in query:
         url = r.url
+        print(url)
         content = eval(r.content)
         if not content['code']:
-            EMPTY_CODE.append(url)
+            codes.append(url)
         if not content['price']:
-            EMPTY_PRICE.append(url)
+            prices.append(url)
         if not content['intro']:
-            EMPTY_INTRO.append(url)
+            intros.append(url)
         if not content['images']:
-            EMPTY_IMAGES.append(url)
-    write_to_file('code.txt', EMPTY_CODE)
-    write_to_file('price.txt', EMPTY_PRICE)
-    write_to_file('intro.txt', EMPTY_INTRO)
-    write_to_file('images.txt', EMPTY_IMAGES)
+            images.append(url)
+    write_to_file('codes.txt', codes)
+    write_to_file('prices.txt', prices)
+    write_to_file('intros.txt', intros)
+    write_to_file('images.txt', images)
+
+if __name__ == '__main__':
+    main()

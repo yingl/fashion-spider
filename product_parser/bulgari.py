@@ -32,14 +32,14 @@ def get_price(driver):
         text = element.text.strip()[1:]
     price = float(text.replace(',', '')) if text else 0
     return price
-    
+
 def get_intro(driver):
     intro = ''
     element = util.find_element_by_css_selector(driver, 'div[data-item=description] > p')
     if element:
         intro = element.text.strip()
     return intro
-    
+
 def get_images(driver):
     images = ''
     texts = []
@@ -59,7 +59,10 @@ def parse(driver, url):
     good['images'] = get_images(driver)
     return good
 
+def main():
+    driver = util.create_chrome_driver()
+    print(parse(driver, sys.argv[1]))
+    driver.quit()
+
 if __name__ == '__main__':
-    DRIVER = util.create_chrome_driver()
-    print(parse(DRIVER, sys.argv[1]))
-    DRIVER.quit()
+    main()

@@ -58,15 +58,15 @@ def woker(spider, database, config):
         except Exception as e:
             print('%s\n%s' % (e, traceback.format_exc()))
 
-if __name__ == '__main__':
-    ARGS = parse_args()
-    THREAD_COUNT = ARGS.thread_count
-    CONFIG = importlib.import_module(ARGS.config)
-    SPIDER = importlib.import_module(ARGS.spider) # Load spider implementation
-    DATABASE = dd.init_database(CONFIG.DB)
+def main():
+    argparse = parse_args()
+    thread_count = args.thread_count
+    config = importlib.import_module(args.config)
+    spider = importlib.import_module(args.spider) # Load spider implementation
+    database = dd.init_database(config.DB)
     threads = []
-    for i in range(multiprocessing.cpu_count() if THREAD_COUNT <= 0 else THREAD_COUNT):
-        threads.append(threading.Thread(target=woker, args=(SPIDER, DATABASE, CONFIG)))
+    for i in range(multiprocessing.cpu_count() if thread_count <= 0 else thread_count):
+        threads.append(threading.Thread(target=woker, args=(spider, database, config)))
     for t in threads:
         t.daemon = True # Or you can't terminate by Ctrl-C
         t.start()
@@ -75,3 +75,5 @@ if __name__ == '__main__':
             time.sleep(100)
     except KeyboardInterrupt:
         exit()
+if __name__ == '__main__':
+    main()

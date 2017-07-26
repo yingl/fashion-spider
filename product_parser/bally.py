@@ -66,7 +66,10 @@ def parse(driver, url):
     good['images'] = get_images(driver)
     return good
 
+def main():
+    driver = util.create_chrome_driver()
+    print(parse(driver, sys.argv[1]))
+    driver.quit()
+
 if __name__ == '__main__':
-    DRIVER = util.create_chrome_driver()
-    print(parse(DRIVER, sys.argv[1]))
-    DRIVER.quit()
+    main()

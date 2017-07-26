@@ -21,7 +21,10 @@ def parse(driver, url):
         products.append(element.get_attribute('href').strip())
     return ';'.join(products)
 
-if __name__ == '__main__':
+def main():
     driver = util.create_chrome_driver()
     print(parse(driver, sys.argv[1]))
     driver.quit()
+
+if __name__ == '__main__':
+    main()

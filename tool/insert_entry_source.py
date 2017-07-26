@@ -1,8 +1,9 @@
 """ Build the queries to insert entry urls """
 # coding:utf-8
+
 import sys
 
-if __name__ == '__main__':
+def main():
     with open(sys.argv[1], 'r') as f:
         for line in f.readlines():
             line = line.strip()
@@ -11,3 +12,6 @@ if __name__ == '__main__':
                 query += '"' + line + '", '
                 query += 'True, now(), now());'
                 print(query)
+
+if __name__ == '__main__':
+    main()
