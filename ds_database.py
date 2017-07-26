@@ -1,8 +1,10 @@
 """ MySQL database """
 # coding:utf-8
 
-import inspect
+import argparse
 import datetime as dt
+import importlib
+import inspect
 import sys
 import traceback
 from peewee import BooleanField # peewee相关模块
@@ -64,11 +66,18 @@ def init_database(config):
                 obj._meta.database = db
     return db
 
-def main():
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-c',
+                        '--config',
+                        default='ds_config') # Assign config file, don't use '.py' suffix.
+    return parser.parse_args()
+
+def main(args):
     database = None
     try:
-        import ds_config as dc # You can modify the code to load different config dynamically
-        database = init_database(dc.DB)
+        config = importlib.import_module(args.config)
+        database = init_database(config.DB)
         tables = []
         for var in dir(sys.modules[__name__]):
             if var != 'Model':
@@ -84,4 +93,4 @@ def main():
             database.close()
 
 if __name__ == '__main__':
-    main()
+    main(parse_args())
