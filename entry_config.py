@@ -4,7 +4,7 @@
 DB = {'host':'localhost',
       'user':'root',
       'passwd':'',
-      'database':'dks_entry',
+      'database':'fs_entry',
       'charset':'utf8'}
       
 REDIS = {'host':'localhost',
