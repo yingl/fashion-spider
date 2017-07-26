@@ -1,17 +1,16 @@
-""" Gucci """
+""" Miumiu """
 # coding: utf-8
 
 import sys
-
 sys.path.append('../')
 import util
 
-prefixes = ['www.gucci.com'] # The browser will jump to .cn
+PREFIXES = ['www.miumiu.com']
 
 def parse(driver, url):
     products = []
     driver.get(url)
-    elements = util.find_elements_by_css_selector(driver, 'div > a.spice-item-grid')
+    elements = util.find_elements_by_css_selector(driver, 'div.product > div > a')
     for element in elements:
         products.append(element.get_attribute('href').strip())
     return ';'.join(products)

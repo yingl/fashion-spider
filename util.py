@@ -36,6 +36,7 @@ def load_parsers(folder, name=''):
             continue
         if f.endswith('.py'):
             module = importlib.import_module(folder + '.' + f[:-3])
-            parsers[module.PREFIX] = module.parse
-            print('Parse for %s loaded.' % module.PREFIX)
+            for prefix in module.PREFIXES:
+                parsers[prefix] = module.parse
+                print('Parse for %s loaded.' % prefix)
     return parsers

@@ -1,16 +1,18 @@
-""" Balenciaga """
+""" Bally """
 # coding:utf-8
 
 import sys
 sys.path.append('../')
 import util
 
-prefixes = ['www.balenciaga.cn']
+PREFIXES = ['www.bally.cn']
 
 def parse(driver, url):
     products = []
     driver.get(url)
-    elements = util.find_elements_by_css_selector(driver, 'a.item-display-image-container')
+    driver.execute_script('window.scrollBy(0, document.body.scrollHeight)；')
+    util.sleep(3)
+    elements = util.find_elements_by_css_selector(driver, 'a.js-producttile_link')
     for element in elements:
         products.append(element.get_attribute('href').strip())
     return ';'.join(products)

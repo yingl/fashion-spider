@@ -1,17 +1,16 @@
-""" Fendi """
+""" Celine """
 # coding: utf-8
 
 import sys
-
 sys.path.append('../')
 import util
 
-prefixes = ['www.fendi.cn']
+PREFIXES = ['www.celine.com']
 
 def parse(driver, url):
     products = []
     driver.get(url)
-    elements = util.find_elements_by_css_selector(driver, 'div#content > div.columns > div.columns > a')
+    elements = util.find_elements_by_css_selector(driver, 'a.item-url.open-productdetail')
     for element in elements:
         products.append(element.get_attribute('href').strip())
     return ';'.join(products)

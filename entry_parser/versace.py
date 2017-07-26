@@ -1,18 +1,19 @@
-""" Louisvuitton """
+""" Versace """
 # coding: utf-8
 
 import sys
-
 sys.path.append('../')
 import util
 
-prefixes = ['www.louisvuitton.cn']
+PREFIXES = ['www.versace.cn']
+
 def parse(driver, url):
     products = []
     driver.get(url)
-    elements = util.find_elements_by_css_selector(driver, 'a.product-item')
-    if not elements:
-        elements = util.find_elements_by_css_selector(driver, 'li.listing > a.product-img')
+    for i in range(10):
+        driver.execute_script('window.scrollBy(0, document.body.scrollHeight);')
+        util.sleep(1)
+    elements = util.find_elements_by_css_selector(driver, 'div.js-product-image > a.js-producttile_link')
     for element in elements:
         products.append(element.get_attribute('href').strip())
     return ';'.join(products)

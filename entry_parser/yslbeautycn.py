@@ -1,17 +1,16 @@
-""" Valentino """
+""" YSL """
 # coding: utf-8
 
 import sys
-
 sys.path.append('../')
 import util
 
-prefixes = ['www.valentino.cn']
+PREFIXES = ['www.yslbeautycn.com']
 
 def parse(driver, url):
     products = []
     driver.get(url)
-    elements = util.find_elements_by_css_selector(driver, 'article.search-item > header > a')
+    elements = util.find_elements_by_css_selector(driver, 'div.product_tile_wrapper > div > div > div.product_actions > a')
     for element in elements:
         products.append(element.get_attribute('href').strip())
     return ';'.join(products)

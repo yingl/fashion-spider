@@ -2,11 +2,10 @@
 # coding: utf-8
 
 import sys
-
 sys.path.append('../')
 import util
 
-prefixes = ['www.cartier.cn']
+PREFIXES = ['www.cartier.cn']
 
 def parse(driver, url):
     products = []

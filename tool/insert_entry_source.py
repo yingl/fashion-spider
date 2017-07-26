@@ -4,7 +4,7 @@
 import sys
 
 def main():
-    with open(sys.argv[1], 'r') as f:
+    with open(sys.argv[1], 'r', encoding='utf-8') as f:
         for line in f.readlines():
             line = line.strip()
             if line:

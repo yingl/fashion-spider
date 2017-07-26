@@ -1,16 +1,16 @@
-""" Miumiu """
-# coding: utf-8
+""" Balenciaga """
+# coding:utf-8
 
 import sys
-
 sys.path.append('../')
 import util
 
-prefixes = ['www.miumiu.com']
+PREFIXES = ['www.balenciaga.cn']
+
 def parse(driver, url):
     products = []
     driver.get(url)
-    elements = util.find_elements_by_css_selector(driver, 'div.product > div > a')
+    elements = util.find_elements_by_css_selector(driver, 'a.item-display-image-container')
     for element in elements:
         products.append(element.get_attribute('href').strip())
     return ';'.join(products)

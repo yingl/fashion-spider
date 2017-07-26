@@ -58,8 +58,7 @@ def woker(spider, database, config):
         except Exception as e:
             print('%s\n%s' % (e, traceback.format_exc()))
 
-def main():
-    argparse = parse_args()
+def main(args):
     thread_count = args.thread_count
     config = importlib.import_module(args.config)
     spider = importlib.import_module(args.spider) # Load spider implementation
@@ -76,4 +75,4 @@ def main():
     except KeyboardInterrupt:
         exit()
 if __name__ == '__main__':
-    main()
+    main(parse_args())

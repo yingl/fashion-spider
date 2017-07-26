@@ -7,9 +7,9 @@ DB = {'host':'localhost',
       'database':'fs_entry',
       'charset':'utf8'}
       
-REDIS = {'host':'localhost',
+QUEUE = {'host':'localhost',
          'port':'6379',
-         'prefix':'dks'}
+         'prefix':'fs_entry'}
 
 TS_NEW = 'new'
 TS_INPROGRESS = 'inprogress'
