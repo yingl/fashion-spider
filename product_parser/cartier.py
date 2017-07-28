@@ -37,22 +37,8 @@ def get_price(driver):
     if element:
         text = element.text.strip()[1:]
     text = text.split(' ')[0]
-    price = float(text.replace(',', '')) if text else 0
+    price = int(text.replace(',', '')) if text else 0
     return price
-
-def get_intro(driver):
-    intro = ''
-    element = util.find_element_by_css_selector(driver, 'div.c-pdp__char--content > span')
-    if element:
-        intro = element.text.strip()
-    else:
-        elements = util.find_elements_by_css_selector(driver, 'span[itemprop=description]')
-        if elements:
-            texts = []
-            for element in elements:
-                texts.append(element.text.strip())
-            intro = '\n'.join(texts)
-    return intro
 
 def get_images(driver):
     images = ''
@@ -74,7 +60,6 @@ def parse(driver, url):
     good['title'] = get_title(driver)
     good['code'] = get_code(driver)
     good['price'] = get_price(driver)
-    good['intro'] = get_intro(driver)
     good['images'] = get_images(driver)
     return good
 
