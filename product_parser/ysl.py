@@ -7,7 +7,7 @@ sys.path.append('../')
 import util
 
 BRAND = 'ysl'
-PREFIXES = ['http://www.yslbeautycn.com']
+PREFIXES = ['www.yslbeautycn.com']
 
 def get_title(driver):
     title = ''
@@ -31,7 +31,8 @@ def get_price(driver):
     element = util.find_element_by_css_selector(driver, 'div.price > p.product_price')
     if element:
         text = element.get_attribute('data-pricevalue').strip()
-    price = int(text.replace(',', '')) if text else 0
+    price = float(text.replace(',', '')) if text else 0
+    price = int(price)
     return price
 
 def get_images(driver):

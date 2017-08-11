@@ -75,12 +75,12 @@ def retry(task_id, config):
         jobs = dd.Job.select().where((dd.Job.task_id == task_id) & (dd.Job.status != config.JS_FINISHED))
         for job in jobs:
             source = dd.Source.select().where(dd.Source.id == job.source_id).get()
-            queue.put({'id':job.id, 'source_id':source.id, 'url':source.url})
-            job.status = config.JS_NEW
-            job.save()
+            if source.enabled: # Skip disabled source
+                queue.put({'id':job.id, 'source_id':source.id, 'url':source.url})
+                job.status = config.JS_NEW
+                job.save()
         task.status = config.TS_INPROGRESS
-        task.failed = 0
-        task.unfinished = len(jobs)
+        # Don't worry numbers, it will be re-calculated.
         task.save()
         print('Retry %d jobs of task %d' % (len(jobs), task_id))
     else:
