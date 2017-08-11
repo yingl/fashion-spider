@@ -21,8 +21,7 @@ def write_to_file(file, lines):
             if line:
                 f.write(line + '\n')
 
-def main():
-    args = parse_args()
+def main(args):
     brand = args.brand
     print(brand)
     codes = []
@@ -54,4 +53,4 @@ def main():
     write_to_file('images.txt', images)
 
 if __name__ == '__main__':
-    main()
+    main(parse_args())

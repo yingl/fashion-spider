@@ -15,8 +15,7 @@ def parse_args():
                         default='')
     return parser.parse_args()
 
-def main():
-    args = parse_args()
+def main(args):
     brand = args.brand
     dd.init_database(ec.DB)
     rows = dd.Result.select()
@@ -35,4 +34,4 @@ def main():
         print(query)
 
 if __name__ == '__main__':
-    main()
+    main(parse_args())
