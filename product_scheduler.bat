@@ -1,0 +1,1 @@
+python ds_scheduler.py -a create -c product_config

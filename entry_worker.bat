@@ -1,0 +1,1 @@
+python ds_worker.py -c entry_config -s entry_spider
