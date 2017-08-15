@@ -8,6 +8,7 @@ def main():
         for line in f.readlines():
             line = line.strip()
             if line:
+                line = line.replace('"', '%022')
                 query = 'insert into source(url, enabled, created_at, updated_at) values('
                 query += '"' + line + '", '
                 query += 'True, now(), now());'
