@@ -10,7 +10,7 @@ PREFIXES = ['www.bally.cn']
 def parse(driver, url):
     products = []
     driver.get(url)
-    driver.execute_script('window.scrollBy(0, document.body.scrollHeight)；')
+    driver.execute_script('window.scrollBy(0, document.body.scrollHeight);')
     util.sleep(3)
     elements = util.find_elements_by_css_selector(driver, 'a.js-producttile_link')
     for element in elements:
