@@ -13,7 +13,12 @@ def get_title(driver):
     title = ''
     element = util.find_element_by_css_selector(driver, 'h1.seo-only > div.modelName > span.modelName')
     if not element:
-        raise Exception('Title not found for %s' % driver.current_url)
+        element = util.find_element_by_css_selector(driver, 'h1.seo-only > span')
+        if not element:
+            raise Exception('Title not found for %s' % driver.current_url)
+        else:
+            title = element.text
+        
     else:
         title = element.text
         element = util.find_element_by_css_selector(driver, 'div.EditorialDescription > span.value')
@@ -35,19 +40,6 @@ def get_price(driver):
         price = float(text.replace(',', '')) if text else 0
     return price
 
-def get_intro(driver):
-    intro = ''
-    element = util.find_element_by_css_selector(driver, 'div[data-accordionpanel=item_detail] > span.icon-plus')
-    if element:
-        element.click()
-    texts = []
-    elements = util.find_elements_by_css_selector(driver, 'div.item-description > ul > li > span.value')
-    for element in elements:
-        texts.append(element.text.strip())
-    if texts:
-        intro = '\n'.join(texts)
-    return intro
-
 def get_images(driver):
     images = ''
     texts = set([])
@@ -61,10 +53,10 @@ def get_images(driver):
 def parse(driver, url):
     driver.get(url)
     good = {'brand':BRAND}
+    good['url'] = url
     good['title'] = get_title(driver)
     good['code'] = get_code(driver)
     good['price'] = get_price(driver)
-    good['intro'] = get_intro(driver)
     good['images'] = get_images(driver)
     return good
 
