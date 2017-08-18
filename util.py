@@ -4,6 +4,10 @@
 import importlib
 import os
 from selenium import webdriver
+import time
+
+def sleep(seconds):
+    time.sleep(seconds)
 
 def create_chrome_driver():
     options = webdriver.ChromeOptions()

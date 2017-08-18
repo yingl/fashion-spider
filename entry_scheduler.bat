@@ -1,1 +1,0 @@
-python ds_scheduler.py -a create -c entry_config

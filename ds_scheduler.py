@@ -19,6 +19,9 @@ def parse_args():
                         '--task_id',
                         default=0,
                         type=int)
+    parser.add_argument('-p',
+                        '--pattern',
+                        default='')
     return parser.parse_args()
 
 def create_task(config):
@@ -26,7 +29,7 @@ def create_task(config):
     task.save()
     queue = dq.Queue(task.id, config.QUEUE) # Create distributed queue for jobs.
     # select * from source where enabled = True
-    sources = dd.Source.select().where(dd.Source.enabled)
+    sources = dd.Source.select().where(dd.Source.enabled & (dd.Source.url.contains(config.pattern)))
     # Create jobs and send to queue
     for source in sources:
         job = dd.Job(task_id=task.id, source_id=source.id, status=config.JS_NEW)
@@ -90,6 +93,7 @@ def main():
     args = parse_args()
     # Use dynamic loading for config file, then we can use different config file for different task.
     config = importlib.import_module(args.config)
+    config.pattern = args.pattern
     dd.init_database(config.DB)
     if args.action == 'create':
         create_task(config)
