@@ -44,6 +44,7 @@ def parse(driver, url):
     driver.get(url)
     time.sleep(5) # Wait some time util everything displayed
     good = {'brand':BRAND}
+    good['url'] = url
     good['title'] = get_title(driver)
     good['code'] = get_code(driver)
     good['price'] = get_price(driver)
