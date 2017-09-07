@@ -1,16 +1,17 @@
-""" Burberry """
+""" Dior """
 # coding:utf-8
 
 import sys
+import time
 sys.path.append('../')
 import util
 
-BRAND = 'burberry'
-PREFIXES = ['cn.burberry.com']
+BRAND = 'dior'
+PREFIXES = ['www.dior.cn']
 
 def get_title(driver):
     title = ''
-    element = util.find_element_by_css_selector(driver, 'h1.product-purchase_name')
+    element = util.find_element_by_css_selector(driver, 'h1.quickbuy-title')
     if not element:
         raise Exception('Title not found for %s' % driver.current_url)
     else:
@@ -18,32 +19,36 @@ def get_title(driver):
     return title
 
 def get_code(driver):
-    code = ''
-    element = util.find_element_by_css_selector(driver, 'p.product-purchase_item-number')
-    if element:
-        code = element.text.strip().split(' ')[-1]
-    return code
+    return ''
 
 def get_price(driver):
     price = 0
     text = ''
-    element = util.find_element_by_css_selector(driver, 'span.product-purchase_price')
+    element = util.find_element_by_css_selector(driver, 'div.quickbuy-details > span.details-price')
     if element:
         text = element.text.strip()[1:]
     price = float(text.replace(',', '')) if text else 0
+    price = int(price)
     return price
 
 def get_images(driver):
     images = ''
     texts = []
-    elements = util.find_elements_by_css_selector(driver, 'div.product-carousel_item > picture > img')
+    elements = util.find_elements_by_css_selector(driver, 'ul.cover-thumbnails.js-cover-thumbs > li > a')
     for element in elements:
-        texts.append(element.get_attribute('src').strip())
+        data = element.get_attribute('data-zoom')
+        if not data:
+            element = util.find_element_by_css_selector(element, 'img')
+            if element:
+                data = element.get_attribute('data-zoom')
+        text = 'https://www.dior.cn' + eval(data)['src'].replace('\\', '')
+        texts.append(text)
     images = ';'.join(texts)
     return images
 
 def parse(driver, url):
     driver.get(url)
+    time.sleep(5) # Wait some time util everything displayed
     good = {'brand':BRAND}
     good['url'] = url
     good['title'] = get_title(driver)

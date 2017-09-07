@@ -1,16 +1,16 @@
-""" Burberry """
-# coding:utf-8
+""" Fendi """
+# coding: utf-8
 
 import sys
 sys.path.append('../')
 import util
 
-BRAND = 'burberry'
-PREFIXES = ['cn.burberry.com']
+BRAND = 'fendi'
+PREFIXES = ['www.fendi.cn']
 
 def get_title(driver):
     title = ''
-    element = util.find_element_by_css_selector(driver, 'h1.product-purchase_name')
+    element = util.find_element_by_css_selector(driver, 'div.content > h1')
     if not element:
         raise Exception('Title not found for %s' % driver.current_url)
     else:
@@ -19,26 +19,22 @@ def get_title(driver):
 
 def get_code(driver):
     code = ''
-    element = util.find_element_by_css_selector(driver, 'p.product-purchase_item-number')
+    element = util.find_element_by_css_selector(driver, 'div.details-field.details-field-productcode > p')
     if element:
-        code = element.text.strip().split(' ')[-1]
+        code = element.text.strip()
     return code
 
 def get_price(driver):
+    # No price for Fendi products
     price = 0
-    text = ''
-    element = util.find_element_by_css_selector(driver, 'span.product-purchase_price')
-    if element:
-        text = element.text.strip()[1:]
-    price = float(text.replace(',', '')) if text else 0
     return price
 
 def get_images(driver):
     images = ''
     texts = []
-    elements = util.find_elements_by_css_selector(driver, 'div.product-carousel_item > picture > img')
+    elements = util.find_elements_by_css_selector(driver, 'div.gallery-nav > div > a')
     for element in elements:
-        texts.append(element.get_attribute('src').strip())
+        texts.append(element.get_attribute('href').strip())
     images = ';'.join(texts)
     return images
 

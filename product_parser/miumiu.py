@@ -1,16 +1,16 @@
-""" Burberry """
+""" Miumiu """
 # coding:utf-8
 
 import sys
 sys.path.append('../')
 import util
 
-BRAND = 'burberry'
-PREFIXES = ['cn.burberry.com']
+BRAND = 'miumiu'
+PREFIXES = ['www.miumiu.com']
 
 def get_title(driver):
     title = ''
-    element = util.find_element_by_css_selector(driver, 'h1.product-purchase_name')
+    element = util.find_element_by_css_selector(driver, 'div#description > h2')
     if not element:
         raise Exception('Title not found for %s' % driver.current_url)
     else:
@@ -19,26 +19,21 @@ def get_title(driver):
 
 def get_code(driver):
     code = ''
-    element = util.find_element_by_css_selector(driver, 'p.product-purchase_item-number')
+    element = util.find_element_by_css_selector(driver, 'ul > li#selected-code')
     if element:
-        code = element.text.strip().split(' ')[-1]
+        code = element.text.strip()
     return code
 
 def get_price(driver):
     price = 0
-    text = ''
-    element = util.find_element_by_css_selector(driver, 'span.product-purchase_price')
-    if element:
-        text = element.text.strip()[1:]
-    price = float(text.replace(',', '')) if text else 0
     return price
 
 def get_images(driver):
     images = ''
     texts = []
-    elements = util.find_elements_by_css_selector(driver, 'div.product-carousel_item > picture > img')
+    elements = util.find_elements_by_css_selector(driver, 'ul#views > li > a')
     for element in elements:
-        texts.append(element.get_attribute('src').strip())
+        texts.append(element.get_attribute('data-view').strip())
     images = ';'.join(texts)
     return images
 

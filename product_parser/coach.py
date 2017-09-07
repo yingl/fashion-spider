@@ -1,16 +1,16 @@
-""" Burberry """
+""" Coach """
 # coding:utf-8
 
 import sys
 sys.path.append('../')
 import util
 
-BRAND = 'burberry'
-PREFIXES = ['cn.burberry.com']
+BRAND = 'coach'
+PREFIXES = ['china.coach.com']
 
 def get_title(driver):
     title = ''
-    element = util.find_element_by_css_selector(driver, 'h1.product-purchase_name')
+    element = util.find_element_by_css_selector(driver, 'h1#curr_skuName')
     if not element:
         raise Exception('Title not found for %s' % driver.current_url)
     else:
@@ -19,26 +19,33 @@ def get_title(driver):
 
 def get_code(driver):
     code = ''
-    element = util.find_element_by_css_selector(driver, 'p.product-purchase_item-number')
+    element = util.find_element_by_css_selector(driver, 'p.pronumber')
     if element:
-        code = element.text.strip().split(' ')[-1]
+        code = element.text.strip().split(':')[-1]
     return code
 
 def get_price(driver):
     price = 0
     text = ''
-    element = util.find_element_by_css_selector(driver, 'span.product-purchase_price')
+    element = util.find_element_by_css_selector(driver, 'input#skuPrices')
     if element:
-        text = element.text.strip()[1:]
+        text = element.text.strip()
     price = float(text.replace(',', '')) if text else 0
     return price
 
 def get_images(driver):
     images = ''
     texts = []
-    elements = util.find_elements_by_css_selector(driver, 'div.product-carousel_item > picture > img')
-    for element in elements:
+    # Main image first
+    element = util.find_element_by_css_selector(driver, 'a#product_main_image > img')
+    if not element:
+        raise Exception('Main image not found for %s' % driver.current_url)
+    else:
         texts.append(element.get_attribute('src').strip())
+    elements = util.find_elements_by_css_selector(driver, 'li > a > img.lazyimg')
+    for element in elements:
+        img = element.get_attribute('lazy_src').strip()
+        texts.append(img.replace('pd_altsq', 'pd_main'))
     images = ';'.join(texts)
     return images
 

@@ -1,16 +1,16 @@
-""" Burberry """
+""" JimmyChoo """
 # coding:utf-8
 
 import sys
 sys.path.append('../')
 import util
 
-BRAND = 'burberry'
-PREFIXES = ['cn.burberry.com']
+BRAND = 'jimmychoo'
+PREFIXES = ['row.jimmychoo.com']
 
 def get_title(driver):
     title = ''
-    element = util.find_element_by_css_selector(driver, 'h1.product-purchase_name')
+    element = util.find_element_by_css_selector(driver, 'h1.product-name')
     if not element:
         raise Exception('Title not found for %s' % driver.current_url)
     else:
@@ -19,27 +19,31 @@ def get_title(driver):
 
 def get_code(driver):
     code = ''
-    element = util.find_element_by_css_selector(driver, 'p.product-purchase_item-number')
-    if element:
-        code = element.text.strip().split(' ')[-1]
     return code
 
 def get_price(driver):
     price = 0
+    unit = 'RMB'
     text = ''
-    element = util.find_element_by_css_selector(driver, 'span.product-purchase_price')
+    element = util.find_element_by_css_selector(driver, 'div.product-content > div > div.product-price > span[itemprop=price]')
     if element:
-        text = element.text.strip()[1:]
+        text = element.text.strip()
+    if text.find('$') >= 0:
+        unit = 'USD'
+        text = text.replace('$', '')
+    elif text.find('€') >= 0:
+        unit = 'EURO'
+        text = text.replace('€', '')
     price = float(text.replace(',', '')) if text else 0
-    return price
+    return unit, price
 
 def get_images(driver):
     images = ''
-    texts = []
-    elements = util.find_elements_by_css_selector(driver, 'div.product-carousel_item > picture > img')
+    texts = set([])
+    elements = util.find_elements_by_css_selector(driver, 'div.js-big-images-list > div > div > div > a > img')
     for element in elements:
-        texts.append(element.get_attribute('src').strip())
-    images = ';'.join(texts)
+        texts.add(element.get_attribute('src').strip())
+    images = ';'.join(list(texts))
     return images
 
 def parse(driver, url):
@@ -48,8 +52,7 @@ def parse(driver, url):
     good['url'] = url
     good['title'] = get_title(driver)
     good['code'] = get_code(driver)
-    good['unit'] = 'RMB'
-    good['price'] = get_price(driver)
+    good['unit'], good['price'] = get_price(driver)
     good['images'] = get_images(driver)
     return good
 
