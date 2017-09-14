@@ -1,0 +1,4 @@
+http://www.apm-monaco.cn/search/#q=&idx=magento2_zh_hans_cn_products&p=0&dFR%5Bapm_product_type%5D%5B0%5D=earring&nR%5Bvisibility_catalog%5D%5B%3D%5D%5B0%5D=1&is_v=1
+http://www.apm-monaco.cn/search/#q=&idx=magento2_zh_hans_cn_products&p=0&dFR%5Bapm_product_type%5D%5B0%5D=ring&nR%5Bvisibility_catalog%5D%5B%3D%5D%5B0%5D=1&is_v=1
+http://www.apm-monaco.cn/search/#q=&idx=magento2_zh_hans_cn_products&p=0&dFR%5Bapm_product_type%5D%5B0%5D=bracelet&nR%5Bvisibility_catalog%5D%5B%3D%5D%5B0%5D=1&is_v=1
+http://www.apm-monaco.cn/search/#q=&idx=magento2_zh_hans_cn_products&p=0&dFR%5Bapm_product_type%5D%5B0%5D=necklace&nR%5Bvisibility_catalog%5D%5B%3D%5D%5B0%5D=1&is_v=1
