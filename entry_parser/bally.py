@@ -9,7 +9,10 @@ PREFIXES = ['www.bally.cn']
 
 def parse(driver, url):
     products = []
-    driver.get(url)
+    try:
+        driver.get(url) # 就是有个页面打开超时，我也很无耐...
+    except:
+        pass
     driver.execute_script('window.scrollBy(0, document.body.scrollHeight);')
     util.sleep(3)
     elements = util.find_elements_by_css_selector(driver, 'a.js-producttile_link')

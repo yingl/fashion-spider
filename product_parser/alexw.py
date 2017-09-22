@@ -1,51 +1,47 @@
-""" Bally """
-# coding: utf-8
+""" AlexanderWang """
+# coding:utf-8
 
 import sys
 sys.path.append('../')
 import util
 
-BRAND = 'bally'
-PREFIXES = ['www.bally.cn']
+BRAND = 'alexanderwang'
+PREFIXES = ['www.alexanderwang.cn']
 
 def get_title(driver):
     title = ''
-    element = util.find_element_by_css_selector(driver, 'h1.product-name')
+    element = util.find_element_by_css_selector(driver, 'h1.productName > div > span.inner.modelName')
     if not element:
         raise Exception('Title not found for %s' % driver.current_url)
     else:
-        title = element.text
-        element = util.find_element_by_css_selector(driver, 'h2.product-short-description')
-        if element:
-            title += ' - ' + element.text.strip()
+        title = element.text.strip()
     return title
 
 def get_code(driver):
-    return ''
+    code = ''
+    return code
 
 def get_price(driver):
     price = 0
     text = ''
-    element = util.find_element_by_css_selector(driver, 'span[itemprop=price]')
+    element = util.find_element_by_css_selector(driver, 'span.value[itemprop=price]')
     if element:
-        text = element.get_attribute('content')
-    price = float(text) if text else 0
+        text = element.text.strip()
+    price = float(text.replace(',', '')) if text else 0
     return price
 
 def get_images(driver):
     images = ''
     texts = []
-    elements = util.find_elements_by_css_selector(driver, 'div.primary-image-item.slick-slide > a.js-producttile_link')
+    elements = util.find_elements_by_css_selector(driver, 'div#itemImages > ul.alternativeImages > li > img')
     for element in elements:
-        texts.append(element.get_attribute('href').strip())
+        texts.append(element.get_attribute('src').strip())
     images = ';'.join(texts)
     return images
 
 def parse(driver, url):
-    try:
-        driver.get(url)
-    except:
-        pass
+    driver.get(url)
+    util.sleep(3)
     good = {'brand':BRAND}
     good['url'] = url
     good['title'] = get_title(driver)
