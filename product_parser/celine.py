@@ -14,7 +14,7 @@ def get_title(driver):
     if not element:
         raise Exception('Title not found for %s' % driver.current_url)
     else:
-        title = element.text.split('<br>')[0].strip()
+        title = element.text.split('\n')[0].strip()
     return title
 
 def get_code(driver):
@@ -29,21 +29,12 @@ def get_price(driver):
     text = ''
     element = util.find_element_by_css_selector(driver, 'div.price > div.p > p')
     if element:
-        print(element)
-        print('xxx', element.text)
         text = element.text.split()[0].strip()
-    price = float(text.replace('.', '')) if text else 0
+    try:        
+        price = float(text.replace('.', '')) if text else 0
+    except:
+        price = 0
     return price
-
-def get_intro(driver):
-    intro = ''
-    element = util.find_element_by_css_selector(driver, 'span.hd')
-    if element:
-        texts = []
-        for text_ in element.text.split('<br>'):
-            texts.append(text_.strip())
-        intro = '\n'.join(texts)
-    return intro
 
 def get_images(driver):
     images = ''
@@ -56,10 +47,11 @@ def parse(driver, url):
     driver.get(url)
     util.sleep(5) # Wait some time util everything displayed
     good = {'brand':BRAND}
+    good['url'] = url
     good['title'] = get_title(driver)
     good['code'] = get_code(driver)
+    good['unit'] = 'RMB'
     good['price'] = get_price(driver)
-    good['intro'] = get_intro(driver)
     good['images'] = get_images(driver)
     return good
 
