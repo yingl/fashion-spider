@@ -9,7 +9,10 @@ PREFIXES = ['www.valentino.cn']
 
 def parse(driver, url):
     products = []
-    driver.get(url)
+    try:
+        driver.get(url)
+    except:
+        pass
     elements = util.find_elements_by_css_selector(driver, 'article.search-item > header > a')
     for element in elements:
         products.append(element.get_attribute('href').strip())
